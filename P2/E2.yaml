@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.19.5
+    name: nginx
+    #two ways to get an env var
+    #get all the vars from the CM - this could work if the value in CM and the variable we want were both in uppercase
+    # envFrom:
+    #   - configMapRef:
+    #       name: mycm
+    #luckily, we can just grab a specific one
+    env:
+      - name: OWNER
+        valueFrom:
+          configMapKeyRef:
+            name: mycm
+            key: owner

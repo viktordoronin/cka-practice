@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.19.5
+    name: nginx
+    #very similar to config map
+    env:
+      - name: DBUSER
+        valueFrom:
+          secretKeyRef:
+            name: mysecret
+            key: dbuser
+      - name: DBPASS
+        valueFrom:
+          secretKeyRef:
+            name: mysecret
+            key: dbpassword
