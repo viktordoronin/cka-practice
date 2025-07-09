@@ -1,0 +1,52 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: manual
+provisioner: kubernetes.io/no-provisioner
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: manual-pv
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp
+  capacity:
+    storage: 1Gi
+  #just to make sure no other PVC can claim this
+  claimRef:
+    name: manual-pvc
+    namespace: default
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: manual-pvc
+spec:
+  storageClassName: manual
+  volumeName: manual-pv
+  #we gotta repeat this bit for both PV and PVC
+  accessModes:
+    - ReadWriteOnce
+  #PV matches PVC if volume storage >= claim storage
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.19.5
+    name: nginx
+  volumes:
+    - name: manual-vol
+      persistentVolumeClaim:
+        claimName: manual-pvc
