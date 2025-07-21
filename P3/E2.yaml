@@ -1,5 +1,5 @@
 #I used the file from E1 as template
-#I should really use Helm for this but w/e Emacs makes search and replace really quick
+#I should really use Helm for this, and I did - the Helm solution is in "helm" directory
 apiVersion: apps/v1
 kind: Deployment
 metadata:

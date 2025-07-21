@@ -1,0 +1,7 @@
+vals:
+- name: cluster
+  type: ClusterIP
+- name: nodeport
+  type: NodePort
+- name: loadbalancer
+  type: LoadBalancer

@@ -1,0 +1,25 @@
+{{- range .Values.vals }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx-deployment-{{ .name }}
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-{{ .name }}
+  template:
+    metadata:
+      labels:
+        app: nginx-{{ .name }} #this needs to match the selectors on deplo and serv
+    spec:
+      containers:
+      - image: nginx:1.7.9
+        name: nginx
+        ports:
+        - containerPort: 80
+{{- end}}

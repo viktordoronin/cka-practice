@@ -1,0 +1,16 @@
+{{- range .Values.vals }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-{{ .name }}
+  namespace: default
+spec:
+  type: {{ .type }}
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-{{ .name }}
+{{- end }}
